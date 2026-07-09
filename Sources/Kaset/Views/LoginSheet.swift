@@ -85,7 +85,10 @@ struct LoginSheet: View {
         // Small delay to allow cookies to settle
         try? await Task.sleep(for: .milliseconds(300))
 
-        if let sapisid = await webKitManager.getSAPISID() {
+        let cookies = await self.webKitManager.getCookies(for: "youtube.com")
+        let hasSession = cookies.contains { $0.name == "SID" || $0.name == "__Secure-3PSID" || $0.name == "__Secure-1PSID" }
+
+        if hasSession, let sapisid = await self.webKitManager.getSAPISID() {
             // Force backup cookies immediately after login
             // This ensures persistence across app restarts even if WebKit loses data
             await self.webKitManager.forceBackupCookies()

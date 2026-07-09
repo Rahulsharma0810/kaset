@@ -14,10 +14,16 @@ CONF=${1:-release}
 SIGNING_MODE=${KASET_SIGNING:-dev}
 SKIP_MAIN_ASSETS=${KASET_SKIP_MAIN_ASSETS:-0}
 APP_NAME="Kaset"
-BUNDLE_ID="com.sertacozercan.Kaset"
+if [[ "$CONF" == "debug" ]]; then
+  BUNDLE_ID="com.sertacozercan.KasetLocal"
+  APP_BUNDLE_NAME="KasetLocal"
+else
+  BUNDLE_ID="com.sertacozercan.Kaset"
+  APP_BUNDLE_NAME="Kaset"
+fi
 DEVELOPMENT_LOCALIZATION="en"
 BUILD_DIR="$ROOT/.build/app"
-APP_BUNDLE="$BUILD_DIR/$APP_NAME.app"
+APP_BUNDLE="$BUILD_DIR/$APP_BUNDLE_NAME.app"
 
 # Build for host architecture by default; allow overriding via ARCHES (e.g., "arm64 x86_64" for universal).
 ARCH_LIST=( ${ARCHES:-} )
